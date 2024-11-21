@@ -1,8 +1,10 @@
+import ScannerQr from "./components/ScannerQr"
+
  function App() { 
 
   return (
     <div>
-      Scanner
+      <ScannerQr/>
     </div>
   )
 }
