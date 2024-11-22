@@ -3,7 +3,11 @@ import { Html5Qrcode,  CameraDevice, Html5QrcodeResult } from 'html5-qrcode';
 import {   Html5QrcodeCameraScanConfig } from 'html5-qrcode/esm/html5-qrcode';
 import { extractIdFromUrl } from '../utils/extractId';
 
-const ScannerQr: React.FC = () => {
+interface ScannerQrProps {
+    onScan: (idBien: string) => void;
+}
+
+const ScannerQr: React.FC<ScannerQrProps> = ({onScan}) => {
     const [result, setResult] = useState<string | null>(null);
     const [devices, setDevices] = useState<CameraDevice[]>([]);
     const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
@@ -23,17 +27,20 @@ const ScannerQr: React.FC = () => {
     };
 
     const onScanFailure = (error: any) => {
-        console.warn(`Code scan error = ${error}`);
+        // console.warn(`Code scan error = ${error}`);
     };
 
     const initializeScanner = async (deviceId: string) => {
         try {
             if (scannerRef.current) {
+                console.log("Scanner ya está en uso, deteniendo...");
                 await scannerRef.current.stop(); // Detiene el scanner si ya está en uso
+                console.log("Deteniendo scanner...", scannerRef); 
             } else {
+                console.log("Inicializando scanner...");
                 scannerRef.current = new Html5Qrcode("reader"); // Inicializa si no existe
-            }
-
+            } 
+            console.log("Iniciando scanner...",scannerRef);
             await scannerRef.current.start(
                 { deviceId: { exact: deviceId } },
                 configScanner,
@@ -41,14 +48,14 @@ const ScannerQr: React.FC = () => {
                 onScanFailure
             );
         } catch (error) {
-            console.error("Error al iniciar el scanner:", error);
+            console.error("Error al iniciar el scanner :", error);
         }
-    };
-
+    }; 
+ 
     useEffect(() => {
         // Obtener cámaras disponibles
         Html5Qrcode.getCameras()
-            .then((cameras) => {
+            .then((cameras) => { 
                 setDevices(cameras);
                 if (cameras.length > 0) {
                     if(localStorage.getItem('selectedDeviceId')) {
@@ -59,20 +66,20 @@ const ScannerQr: React.FC = () => {
                 }
             })
             .catch((err) => console.error("Error al obtener cámaras: ", err));
-
-        return () => {
-            // Detener el scanner al desmontar el componente
-            if (scannerRef.current) {
-                scannerRef.current.stop().catch(console.error);
-            }
-        };
     }, []);
 
     useEffect(() => {
         if (selectedDeviceId) {
-            initializeScanner(selectedDeviceId);
+            initializeScanner(selectedDeviceId); 
         }
     }, [selectedDeviceId]);
+
+    useEffect(() => {
+        if(result) {
+            onScan(result);
+        }
+    }, [result]);
+    
 
     const handleDeviceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedDeviceId(event.target.value); // Cambia la cámara seleccionada
@@ -80,21 +87,23 @@ const ScannerQr: React.FC = () => {
     };
 
     return (
-        <div>
-            <h1>QR Code Scanner</h1>
-            <h2>Seleccionar Cámara</h2>
-            <button onClick={() => initializeScanner(selectedDeviceId || '')}>Iniciar Scanner</button>
-            <select onChange={handleDeviceChange} value={selectedDeviceId || ''}>
+        <div className='text-white'>
+            <div className='mx-2 flex flex-col mb-8'>
+            <p className='font-semibold'>Cambiar Camara</p>
+             <select className='px-3 py-2 rounded-md bg-white border' onChange={handleDeviceChange} value={selectedDeviceId || ''}>
                 {devices.map((device) => (
                     <option key={device.id} value={device.id}>
                         {device.label || `Cámara ${device.id}`}
                     </option>
                 ))}
             </select>
-            <pre>
-                {JSON.stringify({ result }, null, 2)}
-            </pre>
-            <div id="reader" style={{ width: "300px", margin: 'auto' }}></div>
+                </div>
+                <button className='' onClick={ async()=>{
+                    await scannerRef?.current?.stop()
+                    scannerRef.current=null
+                    }}>Close</button>
+                <button className='' onClick={ async()=>await initializeScanner(localStorage.getItem('selectedDeviceId'))}>Iniciar</button>
+            <div id="reader" className='mt-10  border-4 border-dashed' style={{ width: "300px", margin: 'auto' }}></div>
         </div>
     );
 };
