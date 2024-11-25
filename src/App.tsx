@@ -14,19 +14,20 @@ function App() {
       bienAction.get(id)
     }
   }, [id])
+
+  const closeModal=()=>{
+    bienS.clear()
+    setId(null)
+  }
   
   return (
     <div className="p-4 bg-black h-screen overflow-scroll">
-      <pre className="text-white">
-        {/* {
-          JSON.stringify({id,bienS}, null, 3)
-        } */}
-      </pre>
       <h1 className="font-bold text-center text-white text-3xl">Scanear QR</h1>
-      {id && <h1>Id: {id}</h1>}
-      { bienS.item && <DetalleBienScaneado bien={bienS.item} close={()=>bienS.clear()}/>}
-      <ScannerQr onScan={setId} />
-
+      {id && <h1 className="text-white">Id: {id}</h1>}
+     { (!bienS.item && !bienS.loading )&&<ScannerQr onScan={setId} />}
+     <p className="text-white">{localStorage.getItem('selectedDeviceId')}</p>
+      {bienS.loading && <h1 className="text-white text-center">Cargando...</h1>}
+      { (bienS.item && !bienS.loading) &&<DetalleBienScaneado bien={bienS.item} close={closeModal} />}
     </div>
   )
 }

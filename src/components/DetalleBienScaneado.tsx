@@ -32,10 +32,10 @@ export const DetalleBienScaneado:React.FC<DetalleBienScaneadoProps> = ({ bien: {
           <p><b>Oficina: </b> {oficina?.descripcion + ': - '}</p> 
            <p><b>Piso de la  oficina: </b> {oficina?.piso}</p>
         </div>
-          <div className="modal-action">
-            <form method="dialog">
+          <div className="modal-action bg-blue-200">
+            <form method="dialog" className='bg-yellow-300'>
               {/* if there is a button in form, it will close the modal */}
-              <button onClick={close} className="btn">Close</button>
+              <button  onClick={close} className="bg-red-500 px-3 py-2 font-bold w-full">Close</button>
             </form>
           </div>
         </div>

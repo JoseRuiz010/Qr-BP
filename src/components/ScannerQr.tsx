@@ -5,9 +5,10 @@ import { extractIdFromUrl } from '../utils/extractId';
 
 interface ScannerQrProps {
     onScan: (idBien: string) => void;
+    idBienEncontado?: string;
 }
 
-const ScannerQr: React.FC<ScannerQrProps> = ({onScan}) => {
+const ScannerQr: React.FC<ScannerQrProps> = ({onScan,idBienEncontado}) => {
     const [result, setResult] = useState<string | null>(null);
     const [devices, setDevices] = useState<CameraDevice[]>([]);
     const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
@@ -30,7 +31,7 @@ const ScannerQr: React.FC<ScannerQrProps> = ({onScan}) => {
         // console.warn(`Code scan error = ${error}`);
     };
 
-    const initializeScanner = async (deviceId: string) => {
+    const initializeScanner = async (deviceId: string  | undefined) => {
         try {
             if (scannerRef.current) {
                 console.log("Scanner ya está en uso, deteniendo...");
@@ -53,6 +54,7 @@ const ScannerQr: React.FC<ScannerQrProps> = ({onScan}) => {
     }; 
  
     useEffect(() => {
+        console.log("Obteniendo cámaras disponibles...");
         // Obtener cámaras disponibles
         Html5Qrcode.getCameras()
             .then((cameras) => { 
@@ -69,7 +71,8 @@ const ScannerQr: React.FC<ScannerQrProps> = ({onScan}) => {
     }, []);
 
     useEffect(() => {
-        if (selectedDeviceId) {
+        if (selectedDeviceId ) {
+           
             initializeScanner(selectedDeviceId); 
         }
     }, [selectedDeviceId]);
@@ -98,14 +101,10 @@ const ScannerQr: React.FC<ScannerQrProps> = ({onScan}) => {
                 ))}
             </select>
                 </div>
-                <button className='' onClick={ async()=>{
-                    await scannerRef?.current?.stop()
-                    scannerRef.current=null
-                    }}>Close</button>
-                <button className='' onClick={ async()=>await initializeScanner(localStorage.getItem('selectedDeviceId'))}>Iniciar</button>
+                <button className='' onClick={ async()=>await initializeScanner(localStorage.getItem('selectedDeviceId' )|| '')}>Iniciar</button>
             <div id="reader" className='mt-10  border-4 border-dashed' style={{ width: "300px", margin: 'auto' }}></div>
         </div>
-    );
+    ); 
 };
 
 export default ScannerQr;
