@@ -98,7 +98,7 @@ const ScannerQr: React.FC<ScannerQrProps> = ({ onScan }) => {
     return (
         <div className="text-white">
             <div className="mx-2 flex flex-col mb-8">
-                <p className="font-semibold">Cambiar Cámara</p>
+                <p className="font-semibold text-xl">Cambiar Cámara</p>
                 <select
                     className="px-3 py-2 rounded-md bg-white border"
                     onChange={handleDeviceChange}

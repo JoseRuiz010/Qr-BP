@@ -19,11 +19,15 @@ const login = async (data = {}) => {
       store.login(token, rest);
     }
   } catch (error) {
+    if (error instanceof Error)
     store.setError(error?.message);
   }
   // store.login(respuesta);
 }
 
+const logout = () => authStore.setState({ isAuth: false,user:null, token: null });
+
 export const authAction = {
-  login
+  login,
+  logout
 }
