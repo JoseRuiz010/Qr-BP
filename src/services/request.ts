@@ -16,11 +16,12 @@ const axiosInstance = axios.create({
     headers: {'X-Custom-Header': 'foobar'}
 });
 const getConfig = ({method, url, token, params, body}:configRequest) => {
-    const config = {
+    const config: any = {
         method: method,
         url: url,
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : undefined,
         },
         params: params
     };
@@ -45,7 +46,7 @@ export const Request = async ({method, url, token = null, params = {}, body = {}
         console.log('Error:', errorRQ); 
         if (errorRQ) throw new Error(errorRQ.message);
         return {data:response.data.data};
-    } catch (error) {
+    } catch (error: any) {
         const errorRQ = error?.response?.data?.error?.message || error?.message || 'Error making request';
         console.error('Error making request:', errorRQ);
         return {error: errorRQ};

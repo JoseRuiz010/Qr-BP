@@ -4,3 +4,4 @@ const routes ={
         SCAN:"/scan"
     }
 }
+export  default routes;

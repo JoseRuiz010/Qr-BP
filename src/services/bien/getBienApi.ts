@@ -7,7 +7,7 @@ export const getBienApi= async (id:string, token:string) => {
       const res =await Request({method:'GET',url:`/bienes/${id}`, token})
        if(res.error) throw new Error(res.error || 'Error getting bien');
       return res
-   } catch (error) {
+   } catch (error:any) {
       return {error: error.message || error}
    }
 }

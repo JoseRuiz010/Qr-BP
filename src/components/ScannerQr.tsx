@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Html5Qrcode, CameraDevice, Html5QrcodeResult } from 'html5-qrcode';
+import { Html5Qrcode, CameraDevice } from 'html5-qrcode';
 import { Html5QrcodeCameraScanConfig } from 'html5-qrcode/esm/html5-qrcode';
 import { extractIdFromUrl } from '../utils/extractId';
 
@@ -37,7 +37,7 @@ const ScannerQr: React.FC<ScannerQrProps> = ({ onScan }) => {
                     }
                 },
                 (error: any) => {
-                    // console.warn(`Scan error: ${error}`);
+                    console.warn(`Scan error: ${error}`);
                 }
             );
             console.log('Scanner iniciado con éxito.');

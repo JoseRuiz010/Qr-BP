@@ -11,7 +11,8 @@ export const withLoading = async (store:any, fn:any) => {
     if (response.error) {
       throw new Error(response.error || response.error.message || 'Error en la petición');
     }
-  } catch (error) {    
+  } catch (error:any) {    
+
     store.setError(error.message);
   }
 };
