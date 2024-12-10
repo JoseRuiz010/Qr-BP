@@ -10,7 +10,6 @@ interface Props {
 const QrReaderComponent: React.FC<Props> = ({onScan}) => {
     const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
     const [selectIdDevices, setSelectIdDevices] = useState<string | null>(null);
-    const [results, setresults] = useState<string | null>(null)
     useEffect(() => {
         setDevices([]);
         if (!navigator.mediaDevices?.enumerateDevices) {
@@ -37,7 +36,6 @@ const QrReaderComponent: React.FC<Props> = ({onScan}) => {
     const resultScan = (result: IDetectedBarcode[]) => {
         const idBien= extractIdFromUrl(result[0].rawValue)
         if(idBien) {
-            setresults(idBien)
             onScan(idBien) 
         }
     }

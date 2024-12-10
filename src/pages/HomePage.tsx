@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { bienStore } from '../context/bienStore';
 import { bienAction } from '../context/action/bienAction';
-import ScannerQr from '../components/ScannerQr';
 import { DetalleBienScaneado } from '../components/DetalleBienScaneado';
 import { authStore } from '../context/authStore';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +23,7 @@ const HomePage: React.FC = () => {
         bienAction.get(id)
       }
     }, [id])
-    
+
     useEffect(() => {
       if(bienS.error === 'jwt expired'){ 
         alert("Token invalido");
