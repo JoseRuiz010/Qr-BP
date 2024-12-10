@@ -21,8 +21,8 @@ interface DetalleBienScaneadoProps {
 }
 export const DetalleBienScaneado:React.FC<DetalleBienScaneadoProps> = ({ bien: { id, descripcion, nroSerie, orden,oficina },close=()=>console.log('closeeeee') }) => {
   return (
-        <div className="bg-white">
-          <div className="flex flex-col gap-5 border rounded-lg px-4 py-5">
+        <div className="bg-white rounded-2xl ">
+          <div className="flex flex-col gap-5 px-4 py-5">
           <h1 className="text-center font-bold text-2xl">Detalle Bien</h1>
           <h3 className=" "><b>Id: </b>{id}</h3>
           <h3 className=" "><b>Bien: </b>{descripcion}</h3>
@@ -32,10 +32,10 @@ export const DetalleBienScaneado:React.FC<DetalleBienScaneadoProps> = ({ bien: {
           <p><b>Oficina: </b> {oficina?.descripcion + ': - '}</p> 
            <p><b>Piso de la  oficina: </b> {oficina?.piso}</p>
         </div>
-          <div className="modal-action bg-blue-200">
-            <form method="dialog" className='bg-yellow-300'>
+          <div className="modal-action pb-3">
+            <form method="dialog" className='mx-auto flex justify-center'>
               {/* if there is a button in form, it will close the modal */}
-              <button  onClick={close} className="bg-red-500 px-3 py-2 font-bold w-full">Close</button>
+              <button  onClick={close} className="bg-red-500 rounded-xl px-3 py-2 font-bold w-5/6 mx-auto text-white">Cerrar</button>
             </form>
           </div>
         </div>
